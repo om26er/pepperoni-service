@@ -19,9 +19,10 @@ class RestaurantReview(APIView):
     def is_restaurant_registered_for_location(location):
         try:
             Restaurant.objects.get(location=location)
-            return True
         except Restaurant.DoesNotExist:
             return False
+        else:
+            return True
 
     @staticmethod
     def get_rating_mean_and_update(restaurant):
@@ -31,9 +32,10 @@ class RestaurantReview(APIView):
     def has_user_already_reviewed(reviewer_id, restaurant):
         try:
             Review.objects.get(restaurant=restaurant, reviewer_id=reviewer_id)
-            return True
         except Review.DoesNotExist:
             return False
+        else:
+            return True
 
     def post(self, *args, **kwargs):
         validator = ReviewValidationSerializer(data=self.request.data)
