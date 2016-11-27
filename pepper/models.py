@@ -24,3 +24,7 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def review_count(self):
+        return len(Review.objects.filter(restaurant=self))

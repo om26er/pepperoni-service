@@ -48,7 +48,12 @@ class RestaurantReview(APIView):
 
     @staticmethod
     def get_rating_mean_and_update(restaurant):
-        pass
+        reviews = Review.objects.filter(restaurant=restaurant)
+        review_sum = 0
+        for review in reviews:
+            review_sum += review.review_stars
+        restaurant.rating = review_sum/len(reviews)
+        restaurant.save()
 
     @staticmethod
     def has_user_already_reviewed(reviewer_id, restaurant):
@@ -78,4 +83,5 @@ class RestaurantReview(APIView):
         data.pop('location')
         data.pop('name')
         Review.objects.create(restaurant=restaurant, **data)
+        self.get_rating_mean_and_update(restaurant)
         return Response(status=status.HTTP_201_CREATED)
