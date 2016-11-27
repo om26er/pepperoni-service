@@ -15,7 +15,6 @@ class RestaurantAdmin(admin.ModelAdmin):
     readonly_fields = (
         'rating',
         'menu',
-        'owner_contact',
         'owner_name',
         'closing_time',
         'opening_time',
@@ -35,7 +34,6 @@ class RestaurantNeedApprovalAdmin(admin.ModelAdmin):
     readonly_fields = (
         'rating',
         'menu',
-        'owner_contact',
         'owner_name',
         'closing_time',
         'opening_time',

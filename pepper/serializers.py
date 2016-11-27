@@ -15,7 +15,6 @@ class RestaurantSerializer(serializers.ModelSerializer):
     opening_time = serializers.CharField(required=True)
     closing_time = serializers.CharField(required=True)
     owner_name = serializers.CharField(required=True)
-    owner_contact = serializers.CharField(required=True)
     rating = serializers.CharField(required=False)
     menu = serializers.CharField(required=False)
 
