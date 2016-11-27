@@ -6,12 +6,34 @@ from rest_framework.views import APIView
 from pepper.serializers import (
     RestaurantSerializer,
     ReviewValidationSerializer,
+    RestaurantFilterSerializer,
 )
 from pepper.models import Restaurant, Review
+from pepper.location import are_locations_within_radius
 
 
 class RestaurantRegistration(CreateAPIView):
     serializer_class = RestaurantSerializer
+
+
+class RestaurantFilter(APIView):
+    serializer_class = RestaurantFilterSerializer
+
+    def get_queryset(self):
+        return [
+            restaurant for restaurant in Restaurant.objects.all() if
+            are_locations_within_radius(
+                self.request.query_params.get('base_location'),
+                restaurant.location, self.request.query_params.get('radius')
+            )
+        ]
+
+    def get(self, *args, **kwargs):
+        serializer = self.serializer_class(data=self.request.query_params)
+        serializer.is_valid(raise_exception=True)
+        restaurant_serializer = RestaurantSerializer(
+            self.get_queryset(), many=True)
+        return Response(restaurant_serializer.data, status=status.HTTP_200_OK)
 
 
 class RestaurantReview(APIView):

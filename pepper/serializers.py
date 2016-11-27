@@ -42,3 +42,8 @@ class ReviewValidationSerializer(serializers.Serializer):
     name = serializers.CharField(required=True)
     review_text = serializers.CharField(required=False)
     reviewer_id = serializers.CharField(required=True)
+
+
+class RestaurantFilterSerializer(serializers.Serializer):
+    radius = serializers.IntegerField(required=True)
+    base_location = serializers.CharField(required=True)
