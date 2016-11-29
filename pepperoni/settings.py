@@ -1,8 +1,11 @@
 import os
 
+from pepperoni.helpers import ConfigHelpers
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+config_helpers = ConfigHelpers(os.path.expanduser('~/config.ini'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -66,8 +69,12 @@ WSGI_APPLICATION = 'pepperoni.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config_helpers.get_database_credential_by_key('name'),
+        'USER': config_helpers.get_database_credential_by_key('user'),
+        'PASSWORD': config_helpers.get_database_credential_by_key('password'),
+        'HOST': '',
+        'PORT': '',
     }
 }
 
