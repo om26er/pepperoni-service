@@ -15,9 +15,9 @@ class RestaurantSerializer(serializers.ModelSerializer):
     opening_time = serializers.CharField(required=True)
     closing_time = serializers.CharField(required=True)
     owner_name = serializers.CharField(required=True)
-    owner_contact = serializers.CharField(required=True)
     rating = serializers.CharField(required=False)
-    menu = serializers.CharField(required=False)
+    menu = serializers.FileField(required=False)
+    review_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Restaurant
@@ -43,3 +43,8 @@ class ReviewValidationSerializer(serializers.Serializer):
     name = serializers.CharField(required=True)
     review_text = serializers.CharField(required=False)
     reviewer_id = serializers.CharField(required=True)
+
+
+class RestaurantFilterSerializer(serializers.Serializer):
+    radius = serializers.IntegerField(required=True)
+    base_location = serializers.CharField(required=True)

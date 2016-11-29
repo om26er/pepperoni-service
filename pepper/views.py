@@ -6,12 +6,34 @@ from rest_framework.views import APIView
 from pepper.serializers import (
     RestaurantSerializer,
     ReviewValidationSerializer,
+    RestaurantFilterSerializer,
 )
 from pepper.models import Restaurant, Review
+from pepper.location import are_locations_within_radius
 
 
 class RestaurantRegistration(CreateAPIView):
     serializer_class = RestaurantSerializer
+
+
+class RestaurantFilter(APIView):
+    serializer_class = RestaurantFilterSerializer
+
+    def get_queryset(self):
+        return [
+            restaurant for restaurant in Restaurant.objects.all() if
+            are_locations_within_radius(
+                self.request.query_params.get('base_location'),
+                restaurant.location, self.request.query_params.get('radius')
+            )
+        ]
+
+    def get(self, *args, **kwargs):
+        serializer = self.serializer_class(data=self.request.query_params)
+        serializer.is_valid(raise_exception=True)
+        restaurant_serializer = RestaurantSerializer(
+            self.get_queryset(), many=True)
+        return Response(restaurant_serializer.data, status=status.HTTP_200_OK)
 
 
 class RestaurantReview(APIView):
@@ -19,21 +41,28 @@ class RestaurantReview(APIView):
     def is_restaurant_registered_for_location(location):
         try:
             Restaurant.objects.get(location=location)
-            return True
         except Restaurant.DoesNotExist:
             return False
+        else:
+            return True
 
     @staticmethod
     def get_rating_mean_and_update(restaurant):
-        pass
+        reviews = Review.objects.filter(restaurant=restaurant)
+        review_sum = 0
+        for review in reviews:
+            review_sum += review.review_stars
+        restaurant.rating = review_sum/len(reviews)
+        restaurant.save()
 
     @staticmethod
     def has_user_already_reviewed(reviewer_id, restaurant):
         try:
             Review.objects.get(restaurant=restaurant, reviewer_id=reviewer_id)
-            return True
         except Review.DoesNotExist:
             return False
+        else:
+            return True
 
     def post(self, *args, **kwargs):
         validator = ReviewValidationSerializer(data=self.request.data)
@@ -54,4 +83,5 @@ class RestaurantReview(APIView):
         data.pop('location')
         data.pop('name')
         Review.objects.create(restaurant=restaurant, **data)
+        self.get_rating_mean_and_update(restaurant)
         return Response(status=status.HTTP_201_CREATED)

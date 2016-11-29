@@ -19,9 +19,12 @@ class Restaurant(models.Model):
     opening_time = models.CharField(max_length=255, blank=True)
     closing_time = models.CharField(max_length=255, blank=True)
     owner_name = models.CharField(max_length=255, blank=True)
-    owner_contact = models.CharField(max_length=255, blank=True)
     rating = models.IntegerField(default=0)
     menu = models.FileField(blank=True)
 
     def __str__(self):
         return self.name
+
+    @property
+    def review_count(self):
+        return len(Review.objects.filter(restaurant=self))
