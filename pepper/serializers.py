@@ -17,6 +17,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
     owner_name = serializers.CharField(required=True)
     rating = serializers.CharField(required=False)
     menu = serializers.FileField(required=False)
+    review_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Restaurant
