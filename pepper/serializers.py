@@ -38,7 +38,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class ReviewValidationSerializer(serializers.Serializer):
-    review_stars = serializers.IntegerField(required=True)
+    review_stars = serializers.CharField(required=True)
     location = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
     review_text = serializers.CharField(required=False)
