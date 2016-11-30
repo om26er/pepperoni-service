@@ -42,7 +42,10 @@ class ReviewValidationSerializer(serializers.Serializer):
     location = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
     review_text = serializers.CharField(required=False)
-    reviewer_id = serializers.CharField(required=True)
+    reviewer_id = serializers.CharField(
+        required=True,
+        validators=[UniqueValidator(queryset=Review.objects.all())]
+    )
 
 
 class RestaurantFilterSerializer(serializers.Serializer):
