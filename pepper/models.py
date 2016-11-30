@@ -19,7 +19,7 @@ class Restaurant(models.Model):
     opening_time = models.CharField(max_length=255, blank=True)
     closing_time = models.CharField(max_length=255, blank=True)
     owner_name = models.CharField(max_length=255, blank=True)
-    rating = models.IntegerField(default=0)
+    rating = models.FloatField(default=0)
     menu = models.FileField(blank=True)
 
     def __str__(self):
