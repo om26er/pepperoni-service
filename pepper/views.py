@@ -22,7 +22,7 @@ class RestaurantFilter(APIView):
     def get_queryset(self):
         return [
             restaurant for restaurant in Restaurant.objects.all() if
-            are_locations_within_radius(
+            restaurant.approved and are_locations_within_radius(
                 self.request.query_params.get('base_location'),
                 restaurant.location, self.request.query_params.get('radius')
             )
