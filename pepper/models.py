@@ -7,7 +7,7 @@ INT_DEFAULT = -1
 class Review(models.Model):
     restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
     reviewer_id = models.CharField(max_length=255, blank=False, unique=True)
-    review_stars = models.IntegerField(blank=False)
+    review_stars = models.CharField(blank=False)
     review_text = models.CharField(max_length=2000, blank=True)
 
 

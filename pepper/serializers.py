@@ -29,7 +29,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    review_stars = serializers.IntegerField(required=True)
+    review_stars = serializers.CharField(required=True)
     review_text = serializers.CharField(required=False)
 
     class Meta:
