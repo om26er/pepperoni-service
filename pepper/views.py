@@ -49,9 +49,9 @@ class RestaurantReview(APIView):
     @staticmethod
     def get_rating_mean_and_update(restaurant):
         reviews = Review.objects.filter(restaurant=restaurant)
-        review_sum = 0
+        review_sum = 0.0
         for review in reviews:
-            review_sum += review.review_stars
+            review_sum += float(review.review_stars)
         restaurant.rating = review_sum/len(reviews)
         restaurant.save()
 

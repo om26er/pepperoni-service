@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from pepper.models import Restaurant, Review
+from pepper.models import Restaurant
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
@@ -28,24 +28,12 @@ class RestaurantSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
-class ReviewSerializer(serializers.ModelSerializer):
-    review_stars = serializers.CharField(required=True)
-    review_text = serializers.CharField(required=False)
-
-    class Meta:
-        model = Review
-        fields = '__all__'
-
-
 class ReviewValidationSerializer(serializers.Serializer):
     review_stars = serializers.CharField(required=True)
     location = serializers.CharField(required=True)
     name = serializers.CharField(required=True)
     review_text = serializers.CharField(required=False)
-    reviewer_id = serializers.CharField(
-        required=True,
-        validators=[UniqueValidator(queryset=Review.objects.all())]
-    )
+    reviewer_id = serializers.CharField(required=True)
 
 
 class RestaurantFilterSerializer(serializers.Serializer):
