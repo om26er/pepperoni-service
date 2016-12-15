@@ -12,9 +12,9 @@ class RestaurantSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=Restaurant.objects.all())]
     )
     contact = serializers.CharField(required=True)
-    opening_time = serializers.CharField(required=True)
-    closing_time = serializers.CharField(required=True)
+    timings = serializers.CharField(required=True)
     owner_name = serializers.CharField(required=True)
+    business_type = serializers.CharField(required=True)
     rating = serializers.FloatField(required=False)
     menu = serializers.FileField(required=False)
     review_count = serializers.IntegerField(read_only=True)

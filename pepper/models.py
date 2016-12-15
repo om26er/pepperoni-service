@@ -16,11 +16,11 @@ class Review(models.Model):
 
 class Restaurant(models.Model):
     approved = models.BooleanField(default=True)
+    business_type = models.CharField(max_length=255, blank=True)
     location = models.CharField(max_length=255, unique=True, blank=False)
     name = models.CharField(max_length=255, blank=False)
     contact = models.CharField(max_length=255, blank=True)
-    opening_time = models.CharField(max_length=255, blank=True)
-    closing_time = models.CharField(max_length=255, blank=True)
+    timings = models.CharField(max_length=255, blank=True)
     owner_name = models.CharField(max_length=255, blank=True)
     rating = models.FloatField(default=0)
     menu = models.FileField(blank=True)
